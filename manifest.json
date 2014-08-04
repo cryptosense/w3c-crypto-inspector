@@ -1,0 +1,19 @@
+{
+  "name": "Key-inspector",
+  "version": "0.1",
+  "manifest_version": 2,
+  "content_scripts": [{
+      "matches": ["<all_urls>"],
+      "js": ["contentscript.js"],
+      "run_at": "document_start"
+  }],
+ "permissions": [
+    "tabs"
+  ],
+ "web_accessible_resources": ["hooker.js"],
+ "browser_action" :
+    {
+        "default_icon" : "cs-square.png",
+        "default_popup": "popup.html"
+    }
+}

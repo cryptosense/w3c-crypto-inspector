@@ -1,0 +1,60 @@
+/* Cryptosense Key Inspector (C) Cryptosense 2014 */
+body {
+    background-color: #ededed;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    width:25em;
+}
+
+h2 {
+    text-align:center;
+    margin:0.2em;
+}
+
+.save {
+    margin:0;
+    text-align:center;
+}
+
+.key-image {
+    width :1em;
+    height:1em;
+}
+
+.key {
+    margin: 0.2em 0;
+    border:solid;
+    border-width:0.1em;
+    border-color:brown;
+}
+
+.keyTitle {
+    margin:0;
+    display:block;
+    font-size:1em;
+}
+
+.algorithm {
+    font-weight:bold;
+}
+
+.keyContent {
+    font-size:0.8em;
+}
+
+p {
+    margin: 0;
+    margin-left:2em;
+    padding: 0;
+}
+
+ul {
+    margin :0;
+    padding:0;
+    margin-left:2em;
+}
+
+li {
+    margin-left:2em;
+}
