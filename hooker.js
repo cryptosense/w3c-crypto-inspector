@@ -44,16 +44,19 @@ var saveElem = (function (){
 // Formating algorithmIdentifier
 var getAlgorithmIdentifier = function(a)
 {
-    var algorithm = new Object();
-    if (a.name)
-        algorithm.name = a.name.toUpperCase();
-    if (a.iv)
-        algorithm.iv = ABtoHexa(a.iv);
-    if(a.hash)
-        algorithm.hash = a.hash;
-    if (a.length)
-        algorithm.length = a.length;
-    return algorithm;
+    if (a)
+    {
+        var algorithm = new Object();
+        if (a.name)
+            algorithm.name = a.name.toUpperCase();
+        if (a.iv)
+            algorithm.iv = ABtoHexa(a.iv);
+        if(a.hash)
+            algorithm.hash = a.hash;
+        if (a.length)
+            algorithm.length = a.length;
+        return algorithm;
+    }
 };
 
 // Save keys in sessionStorage
@@ -119,6 +122,16 @@ function outputABtoHexa(ret)
     };
 }
 
+// Called on success of an overwrite function that returns raw data
+function outputab2str(ret)
+{
+    return function(a){
+        ret.output = ab2str(a);
+        saveElem(ret);
+        return Promise.resolve(a)
+    };
+}
+
 // Called on success of an overwrite function that returns a key
 function outputKey(ret)
 {
@@ -128,7 +141,7 @@ function outputKey(ret)
         saveElem(ret);
         return Promise.resolve(a)
     };
-}
+};
 
 // Overwrite getRandomValues
 (function() {
@@ -136,7 +149,7 @@ function outputKey(ret)
     window.crypto.getRandomValues = function() {
         var ret = new Object();
         ret.command = "getRandomValues";
-        ret.input = arguments
+        ret.input = arguments;
         var out = proxied.apply(this, arguments)
             .then
         (output(ret),
@@ -145,6 +158,19 @@ function outputKey(ret)
         return out;
     };
 })();
+
+function ab2str(buf) {
+    return String.fromCharCode.apply(null, new Uint16Array(buf));
+}
+
+function str2ab(str) {
+    var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+    var bufView = new Uint16Array(buf);
+    for (var i=0, strLen=str.length; i<strLen; i++) {
+        bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+}
 
 // Overwrite encrypt
 (function() {
@@ -158,7 +184,7 @@ function outputKey(ret)
         ret.input.key = arguments[1];
         // Save the fact that the key has been used.
         editKey(arguments[1], "encrypt");
-        ret.input.data = AtoHexa(arguments[2]);
+        ret.input.data = ab2str(arguments[2]);
         var out = proxied.apply(this, arguments)
             .then
         (outputABtoHexa(ret),
@@ -183,7 +209,7 @@ function outputKey(ret)
         ret.input.data = AtoHexa(arguments[2]);
         var out = proxied.apply(this, arguments)
             .then
-        (outputABtoHexa(ret),
+        (outputab2str(ret),
          error(ret)
         );
         return out;
