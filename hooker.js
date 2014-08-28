@@ -50,7 +50,9 @@ var getAlgorithmIdentifier = function(a)
     if (a.iv)
         algorithm.iv = ABtoHexa(a.iv);
     if(a.hash)
-        algorithm.hash = a.hash
+        algorithm.hash = a.hash;
+    if (a.length)
+        algorithm.length = a.length;
     return algorithm;
 };
 
