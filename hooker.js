@@ -247,8 +247,8 @@ function str2ab(str) {
         ret.input.key = arguments[1];
         // Save the fact that the key has been used.
         editKey(arguments[1], "verify");
-        ret.input.signature = AtoHexa(arguments[2]);
-        ret.input.data = AtoHexa(arguments[3]);
+        ret.input.signature = ABtoHexa(arguments[2]);
+        ret.input.data = ABtoHexa(arguments[3]);
         var out = proxied.apply(this, arguments)
             .then
         (output(ret),
