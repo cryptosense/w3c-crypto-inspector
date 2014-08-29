@@ -145,17 +145,14 @@ function outputKey(ret)
 
 // Overwrite getRandomValues
 (function() {
-    var proxied = window.crypto.getRandomValues;
-    window.crypto.getRandomValues = function() {
+    var proxied = crypto.getRandomValues;
+    crypto.getRandomValues = function() {
         var ret = new Object();
         ret.command = "getRandomValues";
         ret.input = arguments;
-        var out = proxied.apply(this, arguments)
-            .then
-        (output(ret),
-         error(ret)
-        );
-        return out;
+        ret.output = proxied.apply(this, arguments);
+        saveElem(ret);
+        return ret.output;
     };
 })();
 
